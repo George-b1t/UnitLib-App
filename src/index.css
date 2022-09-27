@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+html {
+  background: #1a1a1a;
+}
