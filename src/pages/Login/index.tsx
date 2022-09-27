@@ -12,6 +12,7 @@ import {
   FormItem,
   LoginForm,
 } from "./styles";
+import { setUserCookie } from "../../utils/UserCookies";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,14 +37,16 @@ function Login() {
         const tempUser = res.data.user;
         const tempToken = res.data.token;
 
-        dispatch(
-          setUser({
-            id: tempUser.id,
-            name: tempUser.name,
-            isAdm: tempUser.isAdm,
-            token: tempToken,
-          })
-        );
+        const userData = {
+          id: tempUser.id,
+          name: tempUser.name,
+          isAdm: tempUser.isAdm,
+          token: tempToken,
+        };
+
+        setUserCookie(userData);
+
+        dispatch(setUser(userData));
 
         navigate("/dashboard");
       });
