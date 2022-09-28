@@ -29,36 +29,7 @@ export const FormItem = styled.div`
   label {
     color: #fff;
     font-weight: 600;
-  }
-
-  input {
-    height: 30px;
-    border-radius: 2px;
-    background: transparent;
-    color: #fff;
-
-    padding: auto 4px;
-    border-bottom: 1px solid transparent;
-
-    font-weight: 400;
-    font-size: 16px;
-
-    transition: 0.1s ease;
-
-    &:focus {
-      border-bottom: 1px solid #fff;
-    }
-  }
-`;
-
-export const FormButton = styled.button`
-  width: 100%;
-  height: 30px;
-  border-radius: 2px;
-
-  &:hover,
-  &:focus {
-    filter: brightness(0.8);
+    margin-left: 6px;
   }
 `;
 

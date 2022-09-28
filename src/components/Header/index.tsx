@@ -1,4 +1,5 @@
-import { Container, Title } from "./styles";
+import { NavLink } from "react-router-dom";
+import { Container, Logo, Separator, Title } from "./styles";
 
 interface HeaderProps {
   title: string;
@@ -7,6 +8,12 @@ interface HeaderProps {
 function Header({ title }: HeaderProps) {
   return (
     <Container>
+      <NavLink to="/" style={{ textDecoration: "none" }}>
+        <Logo>
+          Unit<span>Lib</span>
+        </Logo>
+      </NavLink>
+      <Separator />
       <Title>{title}</Title>
     </Container>
   );

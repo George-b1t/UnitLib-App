@@ -1,12 +1,7 @@
+import { Button } from "primereact/button";
 import { NavLink } from "react-router-dom";
 import { Header } from "../../components/Header";
-import {
-  Container,
-  Content,
-  Welcome,
-  WelcomeButton,
-  WelcomeTitle,
-} from "./styles";
+import { Container, Content, Welcome, WelcomeTitle } from "./styles";
 
 function Home() {
   return (
@@ -16,7 +11,7 @@ function Home() {
         <Welcome>
           <WelcomeTitle>Bem-vindo(a) ao UnitLib</WelcomeTitle>
           <NavLink style={{ textDecoration: "none" }} to="/login">
-            <WelcomeButton>Fazer Login</WelcomeButton>
+            <Button style={{ width: "100%" }} label="Fazer login" />
           </NavLink>
         </Welcome>
       </Content>

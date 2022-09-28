@@ -13,4 +13,8 @@ function setUserCookie(user: User) {
   Cookies.set("user_data", JSON.stringify(user));
 }
 
-export { getUserCookie, setUserCookie };
+function removeUserCookie() {
+  Cookies.remove("user_data");
+}
+
+export { getUserCookie, setUserCookie, removeUserCookie };

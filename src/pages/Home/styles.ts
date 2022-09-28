@@ -19,29 +19,12 @@ export const Welcome = styled.div`
 
   margin-bottom: 80px;
 
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const WelcomeTitle = styled.h1`
+  padding: 0 10px;
+  font-size: 25px;
   font-weight: 700;
   color: #fff;
-`;
-
-export const WelcomeButton = styled.button`
-  width: 400px;
-  height: 50px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 20px;
-  font-weight: 600;
-
-  border-radius: 2px;
-
-  &:hover,
-  &:focus {
-    filter: brightness(0.8);
-  }
 `;
