@@ -1,11 +1,13 @@
+import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { setUser } from "../../contexts/redux/slices/userSlice";
 import { removeUserCookie } from "../../utils/UserCookies";
-import { Container, Logo, Separator, Title } from "./styles";
+import { Container, Logo, Separator, SidebarTitle, Title } from "./styles";
+import { CreateBookContent } from "../CreateBookContent";
 
 interface HeaderProps {
   title: string;
@@ -16,6 +18,8 @@ interface HeaderProps {
 function Header({ title, showMenu, isAdm }: HeaderProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menu = useRef(null as any);
 
@@ -32,7 +36,7 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
           label: "Novo livro",
           icon: "pi pi-book",
           command: () => {
-            alert("OPA");
+            setSidebarOpen(true);
           },
         },
         {
@@ -81,6 +85,16 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
           />
         )}
       </div>
+
+      <Sidebar
+        onHide={() => setSidebarOpen(false)}
+        visible={sidebarOpen}
+        className="p-sidebar-sm"
+        closeOnEscape={false}
+      >
+        <SidebarTitle>Criar Livro</SidebarTitle>
+        <CreateBookContent />
+      </Sidebar>
     </Container>
   );
 }

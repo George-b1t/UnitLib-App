@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 
 import { Register } from "./pages/Register";
+import { api } from "./services/api";
 import { getUserCookie } from "./utils/UserCookies";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       if (authRoutes.includes(location.pathname)) navigate("/login");
     } else {
       dispatch(setUser(userData));
+      api.defaults.headers.common["Authorization"] = "Bearer " + userData.token;
       if (!authRoutes.includes(location.pathname)) navigate("/dashboard");
     }
   }, [location]);
