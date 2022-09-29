@@ -5,11 +5,17 @@ export const Container = styled.header`
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   margin: 0 10px;
   padding: 0 30px;
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+  div {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export const Title = styled.h2`
