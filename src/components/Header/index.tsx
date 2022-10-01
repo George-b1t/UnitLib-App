@@ -8,6 +8,7 @@ import { setUser } from "../../contexts/redux/slices/userSlice";
 import { removeUserCookie } from "../../utils/UserCookies";
 import { Container, Logo, Separator, SidebarTitle, Title } from "./styles";
 import { CreateBookContent } from "../CreateBookContent";
+import { PendingBooks } from "../PendingBooks";
 
 interface HeaderProps {
   title: string;
@@ -19,9 +20,17 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [currentPageName, setCurrentPageName] = useState("");
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menu = useRef(null as any);
+
+  function handleSidebar(name: string) {
+    setCurrentPageName(name);
+
+    setSidebarOpen(true);
+  }
 
   function logOut() {
     dispatch(setUser(null));
@@ -34,9 +43,16 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
     ? [
         {
           label: "Novo livro",
-          icon: "pi pi-book",
+          icon: "pi pi-plus",
           command: () => {
-            setSidebarOpen(true);
+            handleSidebar("new_book");
+          },
+        },
+        {
+          label: "Livros pendentes",
+          icon: "pi pi-bookmark",
+          command: () => {
+            handleSidebar("pending_books");
           },
         },
         {
@@ -92,8 +108,20 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
         className="p-sidebar-sm"
         closeOnEscape={false}
       >
-        <SidebarTitle>Criar Livro</SidebarTitle>
-        <CreateBookContent />
+        <SidebarTitle>
+          {currentPageName === "new_book"
+            ? "Novo livro"
+            : currentPageName === "pending_books"
+            ? "Livros pendentes"
+            : ""}
+        </SidebarTitle>
+        {currentPageName === "new_book" ? (
+          <CreateBookContent />
+        ) : currentPageName === "pending_books" ? (
+          <PendingBooks />
+        ) : (
+          ""
+        )}
       </Sidebar>
     </Container>
   );

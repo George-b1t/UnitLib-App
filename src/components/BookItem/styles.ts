@@ -45,7 +45,7 @@ export const Information = styled.div`
   }
 
   p:nth-child(3) {
-    margin-top: 10px;
+    margin-top: 7px;
     font-size: 13px;
   }
 

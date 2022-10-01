@@ -17,3 +17,7 @@ html {
 .p-sidebar {
   background: #2a323d;
 }
+
+.p-skeleton {
+  background: rgba(255, 255, 255, 0.06);
+}
