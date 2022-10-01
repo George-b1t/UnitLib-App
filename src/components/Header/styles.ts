@@ -37,8 +37,3 @@ export const Logo = styled.h1`
     color: #6366f1;
   }
 `;
-
-export const SidebarTitle = styled.h2`
-  color: #6366f1;
-  margin-bottom: 20px;
-`;

@@ -1,17 +1,18 @@
 import { Container, Information } from "./styles";
 
 interface BookItemProps {
-  cape_name: string;
-  title: string;
+  name: string;
   genre: string;
   description: string;
 }
 
-function BookItem({ cape_name, description, genre, title }: BookItemProps) {
+function BookItem({ description, genre, name }: BookItemProps) {
   return (
-    <Container cape_url={`http://localhost:3333/storage/cape/${cape_name}`}>
+    <Container>
+      <i className="pi pi-book"></i>
+
       <Information>
-        <strong>{title}</strong>
+        <strong>{name}</strong>
         <p>{genre}</p>
         <p>{description}</p>
       </Information>

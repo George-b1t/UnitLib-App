@@ -1,14 +1,12 @@
-import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AppContext } from "../../contexts/AppContext";
 import { setUser } from "../../contexts/redux/slices/userSlice";
 import { removeUserCookie } from "../../utils/UserCookies";
-import { Container, Logo, Separator, SidebarTitle, Title } from "./styles";
-import { CreateBookContent } from "../CreateBookContent";
-import { PendingBooks } from "../PendingBooks";
+import { Container, Logo, Separator, Title } from "./styles";
 
 interface HeaderProps {
   title: string;
@@ -17,17 +15,15 @@ interface HeaderProps {
 }
 
 function Header({ title, showMenu, isAdm }: HeaderProps) {
+  const { setCurrentSidebar, setSidebarOpen } = useContext(AppContext);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [currentPageName, setCurrentPageName] = useState("");
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menu = useRef(null as any);
 
   function handleSidebar(name: string) {
-    setCurrentPageName(name);
+    setCurrentSidebar(name);
 
     setSidebarOpen(true);
   }
@@ -59,7 +55,7 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
           label: "Novo adm",
           icon: "pi pi-user-plus",
           command: () => {
-            alert("OPA");
+            handleSidebar("add_administrator");
           },
         },
       ]
@@ -101,28 +97,6 @@ function Header({ title, showMenu, isAdm }: HeaderProps) {
           />
         )}
       </div>
-
-      <Sidebar
-        onHide={() => setSidebarOpen(false)}
-        visible={sidebarOpen}
-        className="p-sidebar-sm"
-        closeOnEscape={false}
-      >
-        <SidebarTitle>
-          {currentPageName === "new_book"
-            ? "Novo livro"
-            : currentPageName === "pending_books"
-            ? "Livros pendentes"
-            : ""}
-        </SidebarTitle>
-        {currentPageName === "new_book" ? (
-          <CreateBookContent />
-        ) : currentPageName === "pending_books" ? (
-          <PendingBooks />
-        ) : (
-          ""
-        )}
-      </Sidebar>
     </Container>
   );
 }

@@ -1,11 +1,17 @@
 import { Toast } from "primereact/toast";
-import { createContext, ReactNode, useRef } from "react";
+import { createContext, ReactNode, useRef, useState } from "react";
 
 export const AppContext = createContext({} as AppContextData);
 
 interface AppContextData {
   toast: React.MutableRefObject<any>;
   makeToast: (value: ToastMaker) => void;
+
+  sidebarOpen: boolean;
+  setSidebarOpen: (value: boolean) => void;
+
+  currentSidebar: string;
+  setCurrentSidebar: (value: string) => void;
 }
 
 interface AppProviderProps {
@@ -20,6 +26,9 @@ interface ToastMaker {
 
 export function AppProvider({ children }: AppProviderProps) {
   const toast = useRef(null as any);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentSidebar, setCurrentSidebar] = useState("");
 
   function makeToast({ content, detail, type }: ToastMaker) {
     toast.current.show({
@@ -36,6 +45,10 @@ export function AppProvider({ children }: AppProviderProps) {
         value={{
           toast,
           makeToast,
+          currentSidebar,
+          setCurrentSidebar,
+          setSidebarOpen,
+          sidebarOpen,
         }}
       >
         {children}

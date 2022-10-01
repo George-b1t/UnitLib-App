@@ -1,31 +1,33 @@
 import styled, { keyframes } from "styled-components";
 
-interface BookProps {
-  cape_url: string;
-}
+export const Container = styled.div`
+  position: relative;
 
-export const Container = styled.div<BookProps>`
   width: 150px;
   height: 190px;
   border-radius: 4px;
-  background-color: #6366f1;
+  background-color: #3f4b5b;
 
   cursor: pointer;
-
-  background-image: url(${({ cape_url }) => cape_url});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 
+  i {
+    position: absolute;
+    top: calc(50% - 1rem);
+    left: calc(50% - 1rem);
+    font-size: 2rem;
+    color: #c8c8c8;
+    z-index: 1;
+  }
+
   &:hover {
     div {
       height: 100%;
       border-radius: 4px;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.85);
     }
   }
 `;
@@ -39,6 +41,8 @@ export const Information = styled.div`
   transition: 0.5s ease;
 
   padding: 10px;
+
+  z-index: 2;
 
   p {
     color: #4d5158 !important;
