@@ -7,6 +7,15 @@ import { Button } from "primereact/button";
 import { api } from "../../services/api";
 import { AppContext } from "../../contexts/AppContext";
 
+export const genres = [
+  { name: "Terror", code: "Terror" },
+  { name: "Fantasia", code: "Fantasia" },
+  { name: "Conto", code: "Conto" },
+  { name: "Aventura", code: "Aventura" },
+  { name: "Romance", code: "Romance" },
+  { name: "Suspense", code: "Suspense" },
+];
+
 function CreateBookContent() {
   const { makeToast } = useContext(AppContext);
 
@@ -16,15 +25,6 @@ function CreateBookContent() {
   const [description, setDescription] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const genres = [
-    { name: "Terror", code: "horror" },
-    { name: "Fantasia", code: "fantasy" },
-    { name: "Conto", code: "tale" },
-    { name: "Aventura", code: "adventure" },
-    { name: "Romance", code: "romance" },
-    { name: "Suspense", code: "thriller" },
-  ];
 
   function handleCreateBook(event: FormEvent) {
     event.preventDefault();

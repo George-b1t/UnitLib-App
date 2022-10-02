@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { OverlayPanel } from "primereact/overlaypanel";
-import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Carousel } from "primereact/carousel";
 import { useSelector } from "react-redux";
@@ -19,8 +17,11 @@ import { api } from "../../services/api";
 import { Book } from "../../components/PendingBookItem";
 
 function Dashboard() {
-  const filterSearchMenu = useRef(null as any);
+  const [loading, setLoading] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
   const [search, setSearch] = useState("");
+
+  const [firstSearch, setFirstSearch] = useState(true);
 
   const [books, setBooks] = useState<Book[]>([]);
 
@@ -55,16 +56,30 @@ function Dashboard() {
   const user = useSelector(selectedUser);
 
   useEffect(() => {
-    searchBooks();
+    searchBooks(!firstSearch);
+    setFirstSearch(false);
   }, [search]);
 
-  function searchBooks() {
+  function searchBooks(fromSearch: boolean = false) {
+    if (fromSearch) {
+      setLoadingSearch(true);
+    } else {
+      setLoading(true);
+    }
+
     api
       .post("/book/search", {
         value: search,
       })
       .then((res) => {
         setBooks(res.data.data.books);
+      })
+      .finally(() => {
+        if (fromSearch) {
+          setLoadingSearch(false);
+        } else {
+          setLoading(false);
+        }
       });
   }
 
@@ -78,8 +93,18 @@ function Dashboard() {
       <AppSidebar />
       <Content>
         <Carousel
-          value={books}
-          itemTemplate={BookItem}
+          value={loading ? [1, 1, 1, 1, 1, 1, 1, 1] : books}
+          itemTemplate={(e) => (
+            <BookItem
+              id={e.id}
+              author={e.author}
+              pdf_location={e.pdf_location}
+              description={e.description}
+              genre={e.genre}
+              name={e.name}
+              skeleton={loading}
+            />
+          )}
           numVisible={8}
           numScroll={1}
           responsiveOptions={responsiveOptions}
@@ -89,22 +114,18 @@ function Dashboard() {
         <FieldSearch>
           <FieldInputSearch>
             <Title>Pesquisar Livro</Title>
-            <div style={{ display: "flex", gap: "1rem", width: "100%" }}>
-              <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search"
-                />
-              </span>
-              <Button
-                icon="pi pi-sliders-h"
-                onClick={(event) => filterSearchMenu.current.toggle(event)}
-                aria-controls="popup_menu"
-                aria-haspopup
+            <span className="p-input-icon-left">
+              <i
+                className={`pi ${
+                  loadingSearch ? "pi-spin pi-spinner" : "pi-search"
+                }`}
               />
-            </div>
+              <InputText
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+              />
+            </span>
           </FieldInputSearch>
         </FieldSearch>
       </Content>

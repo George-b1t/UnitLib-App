@@ -44,38 +44,6 @@ export const FieldUpload = styled.div`
     }
   }
 
-  input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
-
-  input + label {
-    font-size: 1.25em;
-    font-weight: 700;
-    display: inline-block;
-
-    color: #ffffff;
-    background: #6366f1;
-    border: 1px solid #6366f1;
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-      box-shadow 0.2s;
-    border-radius: 6px;
-
-    &:hover {
-      background: #4f46e5;
-      color: #ffffff;
-      border-color: #4f46e5;
-    }
-
-    cursor: pointer;
-  }
-
   button {
     width: 20%;
   }

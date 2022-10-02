@@ -1,5 +1,6 @@
 import { Toast } from "primereact/toast";
 import { createContext, ReactNode, useRef, useState } from "react";
+import { Book } from "../components/PendingBookItem";
 
 export const AppContext = createContext({} as AppContextData);
 
@@ -12,6 +13,9 @@ interface AppContextData {
 
   currentSidebar: string;
   setCurrentSidebar: (value: string) => void;
+
+  currentEditingBook: Book | null;
+  setCurrentEditingBook: (value: Book | null) => void;
 }
 
 interface AppProviderProps {
@@ -29,6 +33,10 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentSidebar, setCurrentSidebar] = useState("");
+
+  const [currentEditingBook, setCurrentEditingBook] = useState<Book | null>(
+    null
+  );
 
   function makeToast({ content, detail, type }: ToastMaker) {
     toast.current.show({
@@ -49,6 +57,8 @@ export function AppProvider({ children }: AppProviderProps) {
           setCurrentSidebar,
           setSidebarOpen,
           sidebarOpen,
+          currentEditingBook,
+          setCurrentEditingBook,
         }}
       >
         {children}

@@ -1,8 +1,6 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 export const Container = styled.div`
-  position: relative;
-
   width: 150px;
   height: 190px;
   border-radius: 4px;
@@ -23,13 +21,25 @@ export const Container = styled.div`
     z-index: 1;
   }
 
+  .p-skeleton {
+    height: 100% !important;
+  }
+
   &:hover {
-    div {
+    .BookItem-fieldInformation {
       height: 100%;
       border-radius: 4px;
       background-color: rgba(255, 255, 255, 0.85);
     }
   }
+`;
+
+export const Content = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 `;
 
 export const Information = styled.div`
@@ -55,5 +65,10 @@ export const Information = styled.div`
 
   strong {
     color: #20262e;
+
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;

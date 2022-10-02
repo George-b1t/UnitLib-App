@@ -55,7 +55,7 @@ function PendingBookItem({ book, onUpload }: BookItem) {
         makeToast({
           type: "error",
           content: "Oops!",
-          detail: "Algo de errado ao tentar criar a conta!",
+          detail: "Algo de errado ao tentar salvar conteúdo do livro!",
         });
       })
       .finally(() => setUploading(false));

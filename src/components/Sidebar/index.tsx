@@ -4,6 +4,7 @@ import { AppContext } from "../../contexts/AppContext";
 import { AddAdministrator } from "../AddAdministrator";
 import { CreateBookContent } from "../CreateBookContent";
 import { PendingBooks } from "../PendingBooks";
+import { ViewBook } from "../ViewBook";
 import { SidebarTitle } from "./styles";
 
 function AppSidebar() {
@@ -24,6 +25,8 @@ function AppSidebar() {
           ? "Livros pendentes"
           : currentSidebar === "add_administrator"
           ? "Novo administrador"
+          : currentSidebar === "edit_book"
+          ? "Editando livro"
           : ""}
       </SidebarTitle>
       {currentSidebar === "new_book" ? (
@@ -32,6 +35,8 @@ function AppSidebar() {
         <PendingBooks />
       ) : currentSidebar === "add_administrator" ? (
         <AddAdministrator />
+      ) : currentSidebar === "edit_book" ? (
+        <ViewBook />
       ) : (
         ""
       )}
