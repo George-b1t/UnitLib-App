@@ -20,7 +20,7 @@ interface BookItem {
 }
 
 function PendingBookItem({ book, onUpload }: BookItem) {
-  const { makeToast } = useContext(AppContext);
+  const { makeToast, searchBooks } = useContext(AppContext);
 
   const [fileIcon, setFileIcon] = useState("pi pi-upload");
   const fileRef: any = useRef(null as any);
@@ -50,6 +50,8 @@ function PendingBookItem({ book, onUpload }: BookItem) {
         });
 
         onUpload();
+
+        searchBooks();
       })
       .catch(() => {
         makeToast({

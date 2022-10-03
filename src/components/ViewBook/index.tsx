@@ -8,9 +8,14 @@ import { api } from "../../services/api";
 import { AppContext } from "../../contexts/AppContext";
 import { genres } from "../CreateBookContent";
 import { FileUpload } from "primereact/fileupload";
+import { useSelector } from "react-redux";
+import { selectedUser } from "../../contexts/redux/slices/userSlice";
 
 function ViewBook() {
-  const { makeToast, currentEditingBook } = useContext(AppContext);
+  const user = useSelector(selectedUser);
+
+  const { makeToast, currentEditingBook, setSidebarOpen, searchBooks } =
+    useContext(AppContext);
 
   const [bookName, setBookName] = useState(currentEditingBook?.name);
   const [authorName, setAuthorName] = useState(currentEditingBook?.author);
@@ -54,6 +59,9 @@ function ViewBook() {
         });
 
         fileRef.current.clear();
+
+        setSidebarOpen(false);
+        searchBooks();
       })
       .catch(() => {
         makeToast({
@@ -62,10 +70,12 @@ function ViewBook() {
           detail: "Algo de errado ao tentar salvar conteúdo do livro!",
         });
       })
-      .finally(() => setUploading(false));
+      .finally(() => {
+        setUploading(false);
+      });
   }
 
-  function handleCreateBook(event: FormEvent) {
+  function handleEditBook(event: FormEvent) {
     if (!currentEditingBook) return;
 
     event.preventDefault();
@@ -99,6 +109,9 @@ function ViewBook() {
         setAuthorName("");
         setGenre(null);
         setDescription("");
+
+        setSidebarOpen(false);
+        searchBooks();
       })
       .catch(() => {
         makeToast({
@@ -124,37 +137,39 @@ function ViewBook() {
 
   return (
     <Container>
-      <ModalForm onSubmit={handleCreateBook}>
-        <FieldUpload>
-          <FormItem>
-            <label htmlFor="name">Selecionar conteúdo</label>
-            <span style={{ display: "flex", gap: "5%" }}>
-              <FileUpload
-                chooseOptions={{
-                  icon: fileIcon,
-                }}
-                chooseLabel="Selecionar"
-                mode="basic"
-                name="demo[]"
-                accept=".pdf"
-                maxFileSize={10000000}
-                ref={fileRef}
-                customUpload
-                uploadHandler={() => {
-                  fileRef.current?.clear();
-                  setFileIcon("pi pi-times");
-                }}
-              />
+      <ModalForm onSubmit={handleEditBook}>
+        {user?.isAdm && (
+          <FieldUpload>
+            <FormItem>
+              <label htmlFor="name">Selecionar conteúdo</label>
+              <span style={{ display: "flex", gap: "5%" }}>
+                <FileUpload
+                  chooseOptions={{
+                    icon: fileIcon,
+                  }}
+                  chooseLabel="Selecionar"
+                  mode="basic"
+                  name="demo[]"
+                  accept=".pdf"
+                  maxFileSize={10000000}
+                  ref={fileRef}
+                  customUpload
+                  uploadHandler={() => {
+                    fileRef.current?.clear();
+                    setFileIcon("pi pi-times");
+                  }}
+                />
 
-              <Button
-                onClick={() => handleUpload()}
-                icon="pi pi-upload"
-                className="p-button-success"
-                loading={uploading}
-              />
-            </span>
-          </FormItem>
-        </FieldUpload>
+                <Button
+                  onClick={() => handleUpload()}
+                  icon="pi pi-upload"
+                  className="p-button-success"
+                  loading={uploading}
+                />
+              </span>
+            </FormItem>
+          </FieldUpload>
+        )}
         <FormItem>
           <label htmlFor="name">Nome do livro</label>
           <span className="p-input-icon-left">
@@ -166,6 +181,7 @@ function ViewBook() {
               onChange={(e) => setBookName(e.target.value)}
               placeholder="Digite o nome do livro"
               required
+              disabled={!user?.isAdm}
               style={{ width: "100%" }}
             />
           </span>
@@ -181,6 +197,7 @@ function ViewBook() {
               onChange={(e) => setAuthorName(e.target.value)}
               placeholder="Digite o nome do autor"
               required
+              disabled={!user?.isAdm}
               style={{ width: "100%" }}
             />
           </span>
@@ -196,7 +213,13 @@ function ViewBook() {
               optionLabel="name"
               onChange={(e) => setGenre(e.value)}
               placeholder="Selecione o gênero do livro"
-              style={{ width: "100%" }}
+              required
+              disabled={!user?.isAdm}
+              style={
+                user?.isAdm
+                  ? { width: "100%" }
+                  : { width: "100%", paddingLeft: 28 }
+              }
             />
           </span>
         </FormItem>
@@ -211,6 +234,7 @@ function ViewBook() {
               placeholder="Digite a descrição do livro"
               required
               style={{ width: "100%" }}
+              disabled={!user?.isAdm}
               autoResize
               rows={1}
             />
@@ -225,12 +249,14 @@ function ViewBook() {
           onClick={handleOpenBook}
         />
 
-        <Button
-          icon="pi pi-pencil"
-          label="Editar"
-          type="submit"
-          loading={isLoading}
-        />
+        {user?.isAdm && (
+          <Button
+            icon="pi pi-pencil"
+            label="Editar"
+            type="submit"
+            loading={isLoading}
+          />
+        )}
       </ModalForm>
     </Container>
   );

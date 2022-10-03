@@ -17,7 +17,7 @@ export const genres = [
 ];
 
 function CreateBookContent() {
-  const { makeToast } = useContext(AppContext);
+  const { makeToast, setSidebarOpen } = useContext(AppContext);
 
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
@@ -57,6 +57,8 @@ function CreateBookContent() {
         setAuthorName("");
         setGenre(null);
         setDescription("");
+
+        setSidebarOpen(false);
       })
       .catch(() => {
         makeToast({

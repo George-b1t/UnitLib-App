@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Carousel } from "primereact/carousel";
 import { useSelector } from "react-redux";
@@ -13,17 +13,13 @@ import {
   FieldInputSearch,
 } from "./styles";
 import { AppSidebar } from "../../components/Sidebar";
-import { api } from "../../services/api";
-import { Book } from "../../components/PendingBookItem";
+import { AppContext } from "../../contexts/AppContext";
 
 function Dashboard() {
-  const [loading, setLoading] = useState(false);
-  const [loadingSearch, setLoadingSearch] = useState(false);
-  const [search, setSearch] = useState("");
+  const { books, searchBooks, loading, loadingSearch, search, setSearch } =
+    useContext(AppContext);
 
   const [firstSearch, setFirstSearch] = useState(true);
-
-  const [books, setBooks] = useState<Book[]>([]);
 
   const responsiveOptions = [
     {
@@ -60,29 +56,6 @@ function Dashboard() {
     setFirstSearch(false);
   }, [search]);
 
-  function searchBooks(fromSearch: boolean = false) {
-    if (fromSearch) {
-      setLoadingSearch(true);
-    } else {
-      setLoading(true);
-    }
-
-    api
-      .post("/book/search", {
-        value: search,
-      })
-      .then((res) => {
-        setBooks(res.data.data.books);
-      })
-      .finally(() => {
-        if (fromSearch) {
-          setLoadingSearch(false);
-        } else {
-          setLoading(false);
-        }
-      });
-  }
-
   return (
     <Container>
       <Header
@@ -92,7 +65,7 @@ function Dashboard() {
       />
       <AppSidebar />
       <Content>
-        <Carousel
+        {/* <Carousel
           value={loading ? [1, 1, 1, 1, 1, 1, 1, 1] : books}
           itemTemplate={(e) => (
             <BookItem
@@ -110,7 +83,7 @@ function Dashboard() {
           responsiveOptions={responsiveOptions}
           showIndicators={false}
           header={<Title>Meus livros</Title>}
-        />
+        /> */}
         <FieldSearch>
           <FieldInputSearch>
             <Title>Pesquisar Livro</Title>
@@ -128,6 +101,25 @@ function Dashboard() {
             </span>
           </FieldInputSearch>
         </FieldSearch>
+        <Carousel
+          value={loading ? [1, 1, 1, 1, 1, 1, 1, 1] : books}
+          itemTemplate={(e) => (
+            <BookItem
+              id={e.id}
+              author={e.author}
+              pdf_location={e.pdf_location}
+              description={e.description}
+              genre={e.genre}
+              name={e.name}
+              skeleton={loading}
+            />
+          )}
+          numVisible={8}
+          numScroll={1}
+          responsiveOptions={responsiveOptions}
+          showIndicators={false}
+          // header={<Title>Meus livros</Title>}
+        />
       </Content>
     </Container>
   );
