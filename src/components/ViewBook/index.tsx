@@ -10,6 +10,7 @@ import { genres } from "../CreateBookContent";
 import { FileUpload } from "primereact/fileupload";
 import { useSelector } from "react-redux";
 import { selectedUser } from "../../contexts/redux/slices/userSlice";
+import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 
 function ViewBook() {
   const user = useSelector(selectedUser);
@@ -28,6 +29,7 @@ function ViewBook() {
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const [fileIcon, setFileIcon] = useState("pi pi-upload");
   const fileRef: any = useRef(null as any);
@@ -105,11 +107,6 @@ function ViewBook() {
           detail: "O livro foi editado com sucesso!",
         });
 
-        setBookName("");
-        setAuthorName("");
-        setGenre(null);
-        setDescription("");
-
         setSidebarOpen(false);
         searchBooks();
       })
@@ -135,8 +132,49 @@ function ViewBook() {
         ?.focus();
   }
 
+  function removeBook() {
+    if (!currentEditingBook) return;
+
+    setIsLoadingDelete(true);
+
+    api
+      .delete(`/book/delete/${currentEditingBook?.id}`)
+      .then(() => {
+        makeToast({
+          type: "success",
+          content: "Aee!",
+          detail: "O livro foi removido com sucesso!",
+        });
+
+        setSidebarOpen(false);
+        searchBooks();
+      })
+      .catch(() => {
+        makeToast({
+          type: "error",
+          content: "Oops!",
+          detail: "Algo de errado ao tentar remover o livro!",
+        });
+      })
+      .finally(() => {
+        setIsLoadingDelete(false);
+      });
+  }
+
+  function confirmRemoveBook(event: any) {
+    confirmPopup({
+      target: event.currentTarget,
+      message: `Tem certeza que deseja remover o livro ${currentEditingBook?.name}?`,
+      icon: "pi pi-exclamation-triangle",
+      accept: () => removeBook(),
+      acceptLabel: "Sim",
+      rejectLabel: "Não",
+    });
+  }
+
   return (
     <Container>
+      <ConfirmPopup />
       <ModalForm onSubmit={handleEditBook}>
         {user?.isAdm && (
           <FieldUpload>
@@ -250,12 +288,22 @@ function ViewBook() {
         />
 
         {user?.isAdm && (
-          <Button
-            icon="pi pi-pencil"
-            label="Editar"
-            type="submit"
-            loading={isLoading}
-          />
+          <>
+            <Button
+              onClick={confirmRemoveBook}
+              label="Remover livro"
+              icon="pi pi-upload"
+              type="button"
+              className="p-button-danger"
+              loading={isLoadingDelete}
+            />
+            <Button
+              icon="pi pi-pencil"
+              label="Editar"
+              type="submit"
+              loading={isLoading}
+            />
+          </>
         )}
       </ModalForm>
     </Container>
