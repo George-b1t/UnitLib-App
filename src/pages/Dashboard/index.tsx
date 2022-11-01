@@ -11,6 +11,7 @@ import {
   Content,
   FieldSearch,
   FieldInputSearch,
+  WhatsAppButton,
 } from "./styles";
 import { AppSidebar } from "../../components/Sidebar";
 import { AppContext } from "../../contexts/AppContext";
@@ -58,6 +59,12 @@ function Dashboard() {
 
   return (
     <Container>
+      <WhatsAppButton
+        target="_blank"
+        href="https://api.whatsapp.com/send?phone=5579998970903&text=Opa%2C%20pode%20me%20ajudar%3F"
+      >
+        <i className="pi pi-whatsapp"></i>
+      </WhatsAppButton>
       <Header
         title={`Seja bem-vindo(a), ${user && user.name}`}
         showMenu

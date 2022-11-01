@@ -876,6 +876,11 @@ prop-types@^15.6.2:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
+pspdfkit@^2022.4.3:
+  version "2022.4.3"
+  resolved "https://registry.yarnpkg.com/pspdfkit/-/pspdfkit-2022.4.3.tgz#a0695e77229b029e969fd19ec88aa4a49a9e3a8d"
+  integrity sha512-hE28JnVTVWg6EIe5YJPJ1XeD9RFgaeAkitBmuAth1W/xR9XZv4/gbYutys/5eFoqyBBx/DmRvxcTeTFaEXziog==
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"

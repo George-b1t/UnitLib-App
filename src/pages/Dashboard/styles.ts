@@ -55,3 +55,31 @@ export const FilterPanelContent = styled.div`
     gap: 0.5rem;
   }
 `;
+
+export const WhatsAppButton = styled.a`
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #25d366;
+  color: #fff;
+  border-radius: 50px;
+  z-index: 1000;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+  }
+
+  i {
+    font-size: 30px;
+  }
+`;

@@ -279,13 +279,13 @@ function ViewBook() {
           </span>
         </FormItem>
 
-        <Button
+        {/* <Button
           className="p-button-warning"
           icon="pi pi-eye"
           label="Ver livro"
           type="button"
           onClick={handleOpenBook}
-        />
+        /> */}
 
         {user?.isAdm && (
           <>

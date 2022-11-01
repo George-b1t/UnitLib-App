@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { Header } from "../../components/Header";
 import { Container, Content, Welcome, WelcomeTitle } from "./styles";
 
+import {} from "pspdfkit";
+
 function Home() {
   return (
     <Container>
