@@ -12,6 +12,10 @@ export interface Book {
   author: string;
   genre: string;
   pdf_location: string;
+  rent_limit: number;
+  _count?: {
+    Rent: number;
+  }
 }
 
 interface BookItem {

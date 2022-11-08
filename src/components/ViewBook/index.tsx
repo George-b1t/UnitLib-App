@@ -2,7 +2,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import { Container, FieldUpload, FormItem, ModalForm } from "./styles";
+import { Container, FieldUpload, FormItem, ModalForm, RentInfo } from "./styles";
 import { FormEvent, useContext, useRef, useState } from "react";
 import { api } from "../../services/api";
 import { AppContext } from "../../contexts/AppContext";
@@ -29,6 +29,7 @@ function ViewBook() {
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRent, setIsLoadingRent] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const [fileIcon, setFileIcon] = useState("pi pi-upload");
@@ -122,15 +123,15 @@ function ViewBook() {
       });
   }
 
-  function handleOpenBook() {
-    window &&
-      window
-        .open(
-          `http://localhost:3333/storage/content/${currentEditingBook?.pdf_location}.pdf`,
-          "_blank"
-        )
-        ?.focus();
-  }
+  // function handleOpenBook() {
+  //   window &&
+  //     window
+  //       .open(
+  //         `http://localhost:3333/storage/content/${currentEditingBook?.pdf_location}.pdf`,
+  //         "_blank"
+  //       )
+  //       ?.focus();
+  // }
 
   function removeBook() {
     if (!currentEditingBook) return;
@@ -170,6 +171,38 @@ function ViewBook() {
       acceptLabel: "Sim",
       rejectLabel: "Não",
     });
+  }
+
+  function rentBook() {
+    if (!currentEditingBook) return;
+
+    setIsLoadingRent(true);
+
+    api
+      .post(`/rent/create`, {
+        book_id: currentEditingBook.id,
+        user_id: user?.id,
+      })
+      .then(() => {
+        makeToast({
+          type: "success",
+          content: "Aee!",
+          detail: "O livro foi alugado com sucesso!",
+        });
+
+        setSidebarOpen(false);
+        searchBooks();
+      })
+      .catch(() => {
+        makeToast({
+          type: "error",
+          content: "Oops!",
+          detail: "Algo de errado ao tentar alugar o livro!",
+        });
+      })
+      .finally(() => {
+        setIsLoadingRent(false);
+      });
   }
 
   return (
@@ -287,6 +320,18 @@ function ViewBook() {
           onClick={handleOpenBook}
         /> */}
 
+        <Button
+          onClick={rentBook}
+          loading={isLoadingRent}
+          label="Alugar"
+          type="button"
+          className="p-button-warning"
+          icon="pi pi-bookmark-fill"
+        />
+        <RentInfo>
+          Alugados: {currentEditingBook?._count?.Rent ?? 0}/{currentEditingBook?.rent_limit}
+        </RentInfo>
+
         {user?.isAdm && (
           <>
             <Button
@@ -298,8 +343,8 @@ function ViewBook() {
               loading={isLoadingDelete}
             />
             <Button
-              icon="pi pi-pencil"
-              label="Editar"
+              icon="pi pi-save"
+              label="Salvar"
               type="submit"
               loading={isLoading}
             />

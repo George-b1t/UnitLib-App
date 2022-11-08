@@ -11,6 +11,10 @@ interface BookItemProps {
   description: string;
   pdf_location: string;
   skeleton?: boolean;
+  rent_limit: number;
+  _count: {
+    Rent: number;
+  }
 }
 
 function BookItem({
@@ -21,6 +25,8 @@ function BookItem({
   id,
   author,
   pdf_location,
+  rent_limit,
+  _count
 }: BookItemProps) {
   const { setCurrentEditingBook, setCurrentSidebar, setSidebarOpen } =
     useContext(AppContext);
@@ -33,6 +39,8 @@ function BookItem({
       genre,
       name,
       pdf_location,
+      rent_limit,
+      _count
     });
     setCurrentSidebar("edit_book");
     setSidebarOpen(true);

@@ -119,6 +119,8 @@ function Dashboard() {
               genre={e.genre}
               name={e.name}
               skeleton={loading}
+              rent_limit={e.rent_limit}
+              _count={{ Rent: e._count?.Rent }}
             />
           )}
           numVisible={8}

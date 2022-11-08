@@ -47,3 +47,8 @@ export const FieldUpload = styled.div`
     width: 20%;
   }
 `;
+
+export const RentInfo = styled.p`
+  width: 100%;
+  text-align: end;
+`;

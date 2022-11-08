@@ -1,6 +1,7 @@
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { FormEvent, useContext, useState } from "react";
 import { Container, FormItem, ModalForm } from "./styles";
 import { Button } from "primereact/button";
@@ -23,6 +24,7 @@ function CreateBookContent() {
   const [authorName, setAuthorName] = useState("");
   const [genre, setGenre] = useState(null as any);
   const [description, setDescription] = useState("");
+  const [rentLimit, setRentLimit] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,6 +47,7 @@ function CreateBookContent() {
         author: authorName,
         genre: genre.code,
         description,
+        rent_limit: rentLimit
       })
       .then(() => {
         makeToast({
@@ -57,6 +60,7 @@ function CreateBookContent() {
         setAuthorName("");
         setGenre(null);
         setDescription("");
+        setRentLimit(0);
 
         setSidebarOpen(false);
       })
@@ -136,6 +140,20 @@ function CreateBookContent() {
             />
           </span>
         </FormItem>
+        <FormItem>
+          <label htmlFor="name">Limite de Aluguel</label>
+          <InputNumber
+            name="book_limit"
+            value={rentLimit}
+            onValueChange={(e) => setRentLimit(Number(e.value))}
+            mode="decimal"
+            required
+            style={{ width: "100%" }}
+            showButtons
+            min={0}
+          />
+        </FormItem>
+        
 
         <Button
           icon="pi pi-plus"
