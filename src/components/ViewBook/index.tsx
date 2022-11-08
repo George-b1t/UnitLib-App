@@ -205,6 +205,10 @@ function ViewBook() {
       });
   }
 
+  function isRented() {
+    return !!currentEditingBook?.Rent.find(item => item.user_id === user?.id)
+  }
+
   return (
     <Container>
       <ConfirmPopup />
@@ -323,13 +327,14 @@ function ViewBook() {
         <Button
           onClick={rentBook}
           loading={isLoadingRent}
-          label="Alugar"
+          label={isRented() ? "Alugado" : "Alugar"}
           type="button"
-          className="p-button-warning"
+          className={isRented() ? "p-button-success" : "p-button-warning"}
           icon="pi pi-bookmark-fill"
+          disabled={isRented() || (currentEditingBook?.Rent.length === currentEditingBook?.rent_limit)}
         />
         <RentInfo>
-          Alugados: {currentEditingBook?._count?.Rent ?? 0}/{currentEditingBook?.rent_limit}
+          Alugados: {currentEditingBook?.Rent.length}/{currentEditingBook?.rent_limit}
         </RentInfo>
 
         {user?.isAdm && (

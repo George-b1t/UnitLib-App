@@ -13,9 +13,9 @@ export interface Book {
   genre: string;
   pdf_location: string;
   rent_limit: number;
-  _count?: {
-    Rent: number;
-  }
+  Rent: {
+    user_id: number;
+  }[]
 }
 
 interface BookItem {

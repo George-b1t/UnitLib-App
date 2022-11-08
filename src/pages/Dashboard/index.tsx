@@ -120,7 +120,7 @@ function Dashboard() {
               name={e.name}
               skeleton={loading}
               rent_limit={e.rent_limit}
-              _count={{ Rent: e._count?.Rent }}
+              Rent={e.Rent}
             />
           )}
           numVisible={8}
