@@ -14,6 +14,7 @@ export interface Book {
   pdf_location: string;
   rent_limit: number;
   Rent: {
+    id: number;
     user_id: number;
   }[]
 }

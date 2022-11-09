@@ -205,6 +205,35 @@ function ViewBook() {
       });
   }
 
+  function unRentBook() {
+    if (!currentEditingBook) return;
+
+    setIsLoadingRent(true);
+
+    api
+      .delete(`/rent/delete/${currentEditingBook.Rent.find(e => e.user_id === user?.id)?.id}`)
+      .then(() => {
+        makeToast({
+          type: "success",
+          content: "Aee!",
+          detail: "O livro foi desalugado com sucesso!",
+        });
+
+        setSidebarOpen(false);
+        searchBooks();
+      })
+      .catch(() => {
+        makeToast({
+          type: "error",
+          content: "Oops!",
+          detail: "Algo de errado ao tentar desalugar o livro!",
+        });
+      })
+      .finally(() => {
+        setIsLoadingRent(false);
+      });
+  }
+
   function isRented() {
     return !!currentEditingBook?.Rent.find(item => item.user_id === user?.id)
   }
@@ -324,15 +353,27 @@ function ViewBook() {
           onClick={handleOpenBook}
         /> */}
 
-        <Button
-          onClick={rentBook}
-          loading={isLoadingRent}
-          label={isRented() ? "Alugado" : "Alugar"}
-          type="button"
-          className={isRented() ? "p-button-success" : "p-button-warning"}
-          icon="pi pi-bookmark-fill"
-          disabled={isRented() || (currentEditingBook?.Rent.length === currentEditingBook?.rent_limit)}
-        />
+        {isRented() ? (
+          <Button
+            onClick={unRentBook}
+            loading={isLoadingRent}
+            label="Desalugar"
+            type="button"
+            className="p-button-danger"
+            icon="pi pi-bookmark-fill"
+          />
+        ) : (
+          <Button
+            onClick={rentBook}
+            loading={isLoadingRent}
+            label="Alugar"
+            type="button"
+            className="p-button-warning"
+            icon="pi pi-bookmark-fill"
+            disabled={currentEditingBook?.Rent.length === currentEditingBook?.rent_limit}
+          />
+        )}
+        
         <RentInfo>
           Alugados: {currentEditingBook?.Rent.length}/{currentEditingBook?.rent_limit}
         </RentInfo>

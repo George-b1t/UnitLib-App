@@ -13,6 +13,7 @@ interface BookItemProps {
   skeleton?: boolean;
   rent_limit: number;
   Rent: {
+    id: number;
     user_id: number;
   }[]
 }

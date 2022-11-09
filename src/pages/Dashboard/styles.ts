@@ -56,6 +56,13 @@ export const FilterPanelContent = styled.div`
   }
 `;
 
+export const MyBooks = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 1rem;
+`
+
 export const WhatsAppButton = styled.a`
   position: fixed;
   width: 60px;

@@ -12,6 +12,7 @@ import {
   FieldSearch,
   FieldInputSearch,
   WhatsAppButton,
+  MyBooks,
 } from "./styles";
 import { AppSidebar } from "../../components/Sidebar";
 import { AppContext } from "../../contexts/AppContext";
@@ -51,6 +52,8 @@ function Dashboard() {
   ];
 
   const user = useSelector(selectedUser);
+
+  const myBooks = books.filter(e => e.Rent.find(e => e.user_id === user?.id));
 
   useEffect(() => {
     searchBooks(!firstSearch);
@@ -129,6 +132,33 @@ function Dashboard() {
           showIndicators={false}
           // header={<Title>Meus livros</Title>}
         />
+        
+        {myBooks.length > 0 && (
+          <MyBooks>
+            <Title>Meus livros</Title>
+            <Carousel
+              value={loading ? [1, 1, 1, 1, 1, 1, 1, 1] : myBooks}
+              itemTemplate={(e) => (
+                <BookItem
+                  id={e.id}
+                  author={e.author}
+                  pdf_location={e.pdf_location}
+                  description={e.description}
+                  genre={e.genre}
+                  name={e.name}
+                  skeleton={loading}
+                  rent_limit={e.rent_limit}
+                  Rent={e.Rent}
+                />
+              )}
+              numVisible={8}
+              numScroll={1}
+              responsiveOptions={responsiveOptions}
+              showIndicators={false}
+              // header={<Title>Meus livros</Title>}
+            />
+          </MyBooks>
+        )}
       </Content>
     </Container>
   );
