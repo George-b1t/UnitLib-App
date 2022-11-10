@@ -3,7 +3,7 @@ import { FileUpload } from "primereact/fileupload";
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { api } from "../../services/api";
-import { Container, FieldUpload, Header } from "./styles";
+import { Container, FieldUpload, FieldUploadWithTitle, Header, UploadTitle } from "./styles";
 
 export interface Book {
   id: number;
@@ -12,6 +12,7 @@ export interface Book {
   author: string;
   genre: string;
   pdf_location: string;
+  cape_location: string;
   rent_limit: number;
   Rent: {
     id: number;
@@ -27,18 +28,21 @@ interface BookItem {
 function PendingBookItem({ book, onUpload }: BookItem) {
   const { makeToast, searchBooks } = useContext(AppContext);
 
-  const [fileIcon, setFileIcon] = useState("pi pi-upload");
-  const fileRef: any = useRef(null as any);
+  const [fileIconContent, setFileIconContent] = useState("pi pi-upload");
+  const [fileIconCape, setFileIconCape] = useState("pi pi-upload");
+  const contentRef: any = useRef(null as any);
+  const capeRef: any = useRef(null as any);
 
-  const [uploading, setUploading] = useState(false);
+  const [uploadingContent, setUploadingContent] = useState(false);
+  const [uploadingCape, setUploadingCape] = useState(false);
 
-  function handleUpload() {
-    setUploading(true);
+  function handleUploadContent() {
+    setUploadingContent(true);
 
     api
       .post(
-        "http://localhost:3333/book/upload",
-        { file: fileRef.current.getFiles()[0] },
+        "http://localhost:3333/book/upload/content",
+        { file: contentRef.current.getFiles()[0] },
         {
           headers: {
             "book-id": book.id,
@@ -65,7 +69,43 @@ function PendingBookItem({ book, onUpload }: BookItem) {
           detail: "Algo de errado ao tentar salvar conteúdo do livro!",
         });
       })
-      .finally(() => setUploading(false));
+      .finally(() => setUploadingContent(false));
+  }
+
+  function handleUploadCape() {
+    setUploadingCape(true);
+
+    api
+      .post(
+        "http://localhost:3333/book/upload/cape",
+        { file: capeRef.current.getFiles()[0] },
+        {
+          headers: {
+            "book-id": book.id,
+            "file-name": `${book.name}-${book.id}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then(() => {
+        makeToast({
+          type: "success",
+          content: "Aee!",
+          detail: "A capa do livro foi salvo com sucesso!",
+        });
+
+        onUpload();
+
+        searchBooks();
+      })
+      .catch(() => {
+        makeToast({
+          type: "error",
+          content: "Oops!",
+          detail: "Algo de errado ao tentar salvar capa do livro!",
+        });
+      })
+      .finally(() => setUploadingCape(false));
   }
 
   return (
@@ -76,31 +116,71 @@ function PendingBookItem({ book, onUpload }: BookItem) {
         <p>{book.author}</p>
       </Header>
 
-      <FieldUpload>
-        <FileUpload
-          chooseOptions={{
-            icon: fileIcon,
-          }}
-          chooseLabel="Selecionar"
-          mode="basic"
-          name="demo[]"
-          accept=".pdf"
-          maxFileSize={10000000}
-          ref={fileRef}
-          customUpload
-          uploadHandler={() => {
-            fileRef.current?.clear();
-            setFileIcon("pi pi-times");
-          }}
-        />
+      {
+        !book.pdf_location && (
+          <FieldUploadWithTitle>
+            <UploadTitle>Conteúdo</UploadTitle>
+            <FieldUpload>
+              <FileUpload
+                chooseOptions={{
+                  icon: fileIconContent,
+                }}
+                chooseLabel="Selecionar"
+                mode="basic"
+                name="demo[]"
+                accept=".pdf"
+                maxFileSize={10000000}
+                ref={contentRef}
+                customUpload
+                uploadHandler={() => {
+                  contentRef.current?.clear();
+                  setFileIconContent("pi pi-save");
+                }}
+              />
 
-        <Button
-          onClick={() => handleUpload()}
-          icon="pi pi-upload"
-          className="p-button-success"
-          loading={uploading}
-        />
-      </FieldUpload>
+              <Button
+                onClick={() => handleUploadContent()}
+                icon="pi pi-upload"
+                className="p-button-success"
+                loading={uploadingContent}
+              />
+            </FieldUpload>
+          </FieldUploadWithTitle>
+        )
+      }
+
+      {
+        !book.cape_location && (
+          <FieldUploadWithTitle>
+            <UploadTitle>Capa</UploadTitle>
+            <FieldUpload>
+              <FileUpload
+                chooseOptions={{
+                  icon: fileIconCape,
+                }}
+                chooseLabel="Selecionar"
+                mode="basic"
+                name="demo[]"
+                accept=".png"
+                maxFileSize={2000000}
+                ref={capeRef}
+                customUpload
+                uploadHandler={() => {
+                  capeRef.current?.clear();
+                  setFileIconCape("pi pi-upload");
+                }}
+              />
+
+              <Button
+                onClick={() => handleUploadCape()}
+                icon="pi pi-upload"
+                className="p-button-success"
+                loading={uploadingCape}
+              />
+            </FieldUpload>
+          </FieldUploadWithTitle>
+        )
+      }
     </Container>
   );
 }

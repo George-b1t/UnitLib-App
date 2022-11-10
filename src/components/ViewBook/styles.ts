@@ -41,7 +41,9 @@ export const FormItem = styled.div`
 
 export const FieldUpload = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
+  gap: 1rem;
 
   button {
     width: 20%;

@@ -26,7 +26,7 @@ export const Container = styled.div`
   padding: 1rem;
   border-radius: 6px;
 
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const FieldUpload = styled.div`
@@ -47,6 +47,19 @@ export const FieldUpload = styled.div`
   button {
     width: 20%;
   }
+`;
+
+export const FieldUploadWithTitle = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+`
+
+export const UploadTitle = styled.p`
+  color: #fff;
+  width: 100%;
+  padding-left: 6px;
 `;
 
 export const Header = styled.div`

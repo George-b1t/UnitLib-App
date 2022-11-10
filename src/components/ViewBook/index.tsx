@@ -32,20 +32,23 @@ function ViewBook() {
   const [isLoadingRent, setIsLoadingRent] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const [fileIcon, setFileIcon] = useState("pi pi-upload");
-  const fileRef: any = useRef(null as any);
+  const [fileIconContent, setFileIconContent] = useState("pi pi-upload");
+  const [fileIconCape, setFileIconCape] = useState("pi pi-upload");
+  const fileRefContent: any = useRef(null as any);
+  const fileRefCape: any = useRef(null as any);
 
-  const [uploading, setUploading] = useState(false);
+  const [uploadingContent, setUploadingContent] = useState(false);
+  const [uploadingCape, setUploadingCape] = useState(false);
 
-  function handleUpload() {
+  function handleUploadContent() {
     if (!currentEditingBook) return;
 
-    setUploading(true);
+    setUploadingContent(true);
 
     api
       .post(
-        "http://localhost:3333/book/upload",
-        { file: fileRef.current.getFiles()[0] },
+        "http://localhost:3333/book/upload/content",
+        { file: fileRefContent.current.getFiles()[0] },
         {
           headers: {
             "book-id": currentEditingBook.id,
@@ -61,7 +64,7 @@ function ViewBook() {
           detail: "O conteúdo do livro foi salvo com sucesso!",
         });
 
-        fileRef.current.clear();
+        fileRefContent.current.clear();
 
         setSidebarOpen(false);
         searchBooks();
@@ -74,7 +77,48 @@ function ViewBook() {
         });
       })
       .finally(() => {
-        setUploading(false);
+        setUploadingContent(false);
+      });
+  }
+
+  function handleUploadCape() {
+    if (!currentEditingBook) return;
+
+    setUploadingCape(true);
+
+    api
+      .post(
+        "http://localhost:3333/book/upload/cape",
+        { file: fileRefCape.current.getFiles()[0] },
+        {
+          headers: {
+            "book-id": currentEditingBook.id,
+            "file-name": `${currentEditingBook.name}-${currentEditingBook.id}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then(() => {
+        makeToast({
+          type: "success",
+          content: "Aee!",
+          detail: "A capa do livro foi salvo com sucesso!",
+        });
+
+        fileRefCape.current.clear();
+
+        setSidebarOpen(false);
+        searchBooks();
+      })
+      .catch(() => {
+        makeToast({
+          type: "error",
+          content: "Oops!",
+          detail: "Algo de errado ao tentar salvar capa do livro!",
+        });
+      })
+      .finally(() => {
+        setUploadingCape(false);
       });
   }
 
@@ -249,26 +293,55 @@ function ViewBook() {
               <span style={{ display: "flex", gap: "5%" }}>
                 <FileUpload
                   chooseOptions={{
-                    icon: fileIcon,
+                    icon: fileIconContent,
                   }}
                   chooseLabel="Selecionar"
                   mode="basic"
                   name="demo[]"
                   accept=".pdf"
                   maxFileSize={10000000}
-                  ref={fileRef}
+                  ref={fileRefContent}
                   customUpload
                   uploadHandler={() => {
-                    fileRef.current?.clear();
-                    setFileIcon("pi pi-times");
+                    fileRefContent.current?.clear();
+                    setFileIconContent("pi pi-upload");
                   }}
                 />
 
                 <Button
-                  onClick={() => handleUpload()}
+                  onClick={() => handleUploadContent()}
                   icon="pi pi-upload"
                   className="p-button-success"
-                  loading={uploading}
+                  loading={uploadingContent}
+                />
+              </span>
+            </FormItem>
+
+            <FormItem>
+              <label htmlFor="name">Selecionar capa</label>
+              <span style={{ display: "flex", gap: "5%" }}>
+                <FileUpload
+                  chooseOptions={{
+                    icon: fileIconCape,
+                  }}
+                  chooseLabel="Selecionar"
+                  mode="basic"
+                  name="demo[]"
+                  accept=".png"
+                  maxFileSize={2000000}
+                  ref={fileRefCape}
+                  customUpload
+                  uploadHandler={() => {
+                    fileRefCape.current?.clear();
+                    setFileIconCape("pi pi-upload");
+                  }}
+                />
+
+                <Button
+                  onClick={() => handleUploadCape()}
+                  icon="pi pi-upload"
+                  className="p-button-success"
+                  loading={uploadingCape}
                 />
               </span>
             </FormItem>
