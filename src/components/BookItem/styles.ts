@@ -12,13 +12,13 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: flex-end;
 
-  i {
+  overflow: hidden;
+
+  img {
     position: absolute;
-    top: calc(50% - 1rem);
-    left: calc(50% - 1rem);
-    font-size: 2rem;
-    color: #c8c8c8;
-    z-index: 1;
+    top: 0;
+    width: 100%;
+    border-radius: 5px;
   }
 
   .p-skeleton {

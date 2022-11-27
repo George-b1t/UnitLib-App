@@ -16,9 +16,10 @@ import {
 } from "./styles";
 import { AppSidebar } from "../../components/Sidebar";
 import { AppContext } from "../../contexts/AppContext";
+import { ShowBookPdf } from "../../components/ShowBookPdf";
 
 function Dashboard() {
-  const { books, searchBooks, loading, loadingSearch, search, setSearch } =
+  const { books, searchBooks, loading, loadingSearch, search, setSearch, showPdf, setShowPdf, currentEditingBook } =
     useContext(AppContext);
 
   const [firstSearch, setFirstSearch] = useState(true);
@@ -68,6 +69,7 @@ function Dashboard() {
       >
         <i className="pi pi-whatsapp"></i>
       </WhatsAppButton>
+      {showPdf && <ShowBookPdf file={currentEditingBook?.pdf_location + ".pdf" ?? ""} onClose={() => setShowPdf(false)} />}
       <Header
         title={`Seja bem-vindo(a), ${user && user.name}`}
         showMenu
@@ -124,6 +126,7 @@ function Dashboard() {
               skeleton={loading}
               rent_limit={e.rent_limit}
               Rent={e.Rent}
+              cape_location={e.cape_location}
             />
           )}
           numVisible={8}
@@ -149,6 +152,7 @@ function Dashboard() {
                   skeleton={loading}
                   rent_limit={e.rent_limit}
                   Rent={e.Rent}
+                  cape_location={e.cape_location}
                 />
               )}
               numVisible={8}

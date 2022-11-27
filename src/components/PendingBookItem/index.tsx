@@ -161,7 +161,7 @@ function PendingBookItem({ book, onUpload }: BookItem) {
                 chooseLabel="Selecionar"
                 mode="basic"
                 name="demo[]"
-                accept=".png"
+                accept="image/*"
                 maxFileSize={2000000}
                 ref={capeRef}
                 customUpload

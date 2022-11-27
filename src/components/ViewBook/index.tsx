@@ -15,7 +15,7 @@ import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 function ViewBook() {
   const user = useSelector(selectedUser);
 
-  const { makeToast, currentEditingBook, setSidebarOpen, searchBooks } =
+  const { makeToast, currentEditingBook, setSidebarOpen, searchBooks, setShowPdf } =
     useContext(AppContext);
 
   const [bookName, setBookName] = useState(currentEditingBook?.name);
@@ -260,7 +260,7 @@ function ViewBook() {
         makeToast({
           type: "success",
           content: "Aee!",
-          detail: "O livro foi desalugado com sucesso!",
+          detail: "O livro foi devolvido com sucesso!",
         });
 
         setSidebarOpen(false);
@@ -270,7 +270,7 @@ function ViewBook() {
         makeToast({
           type: "error",
           content: "Oops!",
-          detail: "Algo de errado ao tentar desalugar o livro!",
+          detail: "Algo de errado ao tentar devolver o livro!",
         });
       })
       .finally(() => {
@@ -327,7 +327,7 @@ function ViewBook() {
                   chooseLabel="Selecionar"
                   mode="basic"
                   name="demo[]"
-                  accept=".png"
+                  accept="image/*"
                   maxFileSize={2000000}
                   ref={fileRefCape}
                   customUpload
@@ -418,19 +418,21 @@ function ViewBook() {
           </span>
         </FormItem>
 
-        {/* <Button
-          className="p-button-warning"
-          icon="pi pi-eye"
-          label="Ver livro"
-          type="button"
-          onClick={handleOpenBook}
-        /> */}
+        {isRented() && (
+          <Button
+            className="p-button-warning"
+            icon="pi pi-eye"
+            label="Ver livro"
+            type="button"
+            onClick={() => setShowPdf(true)}
+          />
+        )}
 
         {isRented() ? (
           <Button
             onClick={unRentBook}
             loading={isLoadingRent}
-            label="Desalugar"
+            label="Devolver"
             type="button"
             className="p-button-danger"
             icon="pi pi-bookmark-fill"

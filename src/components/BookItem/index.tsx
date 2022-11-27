@@ -12,6 +12,7 @@ interface BookItemProps {
   pdf_location: string;
   skeleton?: boolean;
   rent_limit: number;
+  cape_location: string;
   Rent: {
     id: number;
     user_id: number;
@@ -27,7 +28,8 @@ function BookItem({
   author,
   pdf_location,
   rent_limit,
-  Rent
+  Rent,
+  cape_location
 }: BookItemProps) {
   const { setCurrentEditingBook, setCurrentSidebar, setSidebarOpen } =
     useContext(AppContext);
@@ -41,7 +43,8 @@ function BookItem({
       name,
       pdf_location,
       rent_limit,
-      Rent
+      Rent,
+      cape_location
     });
     setCurrentSidebar("edit_book");
     setSidebarOpen(true);
@@ -53,7 +56,7 @@ function BookItem({
         <Skeleton />
       ) : (
         <Content onClick={handleViewBook}>
-          <i className="pi pi-book"></i>
+          <img src={`http://localhost:3333/storage/cape/${cape_location}.png`} alt="Imagem livro" />
 
           <Information className="BookItem-fieldInformation">
             <strong>{name}</strong>

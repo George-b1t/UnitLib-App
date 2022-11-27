@@ -31,6 +31,9 @@ interface AppContextData {
 
   currentEditingBook: Book | null;
   setCurrentEditingBook: (value: Book | null) => void;
+
+  showPdf: boolean;
+  setShowPdf: (value: boolean) => void;
 }
 
 interface AppProviderProps {
@@ -53,6 +56,8 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentSidebar, setCurrentSidebar] = useState("");
+
+  const [showPdf, setShowPdf] = useState(false);
 
   const [books, setBooks] = useState<Book[]>([]);
 
@@ -113,6 +118,8 @@ export function AppProvider({ children }: AppProviderProps) {
           sidebarOpen,
           currentEditingBook,
           setCurrentEditingBook,
+          showPdf,
+          setShowPdf
         }}
       >
         {children}
